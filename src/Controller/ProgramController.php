@@ -18,7 +18,6 @@ class ProgramController extends AbstractController
         ]);
     }
 
-
     // #[Route('/{id}', methods: ['GET'], requirements: ['id' => '\d+'], name: 'show')]
     #[Route('/{id<\d+>}', name: 'show', methods: ['GET'])]
     // Alternative : il est aussi possible d'écrire les requirements de manière plus condensée : #[Route('/program/list/{page<\d+>}', name: 'program_list')]. Cette écriture inline nécessite l'utilisation des chevrons < > pour encadrer la regex.
@@ -27,5 +26,5 @@ class ProgramController extends AbstractController
         return $this->render('program/show.html.twig', [
             'id' => $id,
         ]);
-    }
+    } 
 }

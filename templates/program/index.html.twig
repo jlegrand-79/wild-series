@@ -1,7 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Wild Series{% endblock %}
+{% block title %}Wild Series
+{% endblock %}
 
 {% block body %}
-<h1>{{ website }} index</h1>
+	<h1>{{ website }}
+		index</h1>
+	<ul class="list-group">
+		<li class="list-group-item">
+			<a href="/program/1">Série n°1</a>
+		</li>
+		<li class="list-group-item">
+			<a href="/program/2">Série n°2</a>
+		</li>
+	</ul>
 {% endblock %}
