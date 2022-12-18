@@ -30,7 +30,7 @@ class SeasonFixtures extends Fixture implements DependentFixtureInterface
                 //Ce Faker va nous permettre d'alimenter l'instance de Season que l'on souhaite ajouter en base
                 $season->setNumber($j);
                 $season->setYear($faker->year());
-                $season->setDescription($faker->paragraphs(3, true));
+                $season->setDescription($faker->text(255));
                 $season->setProgram($this->getReference('program_' . $i));
                 $manager->persist($season);
                 $this->addReference('season_' . $j . $i, $season);
