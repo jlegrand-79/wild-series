@@ -24,6 +24,8 @@
 		</div>
 	</div>
 
+	<a href="{{ path('program_edit', {'id': program.id}) }}">Modifier la série</a><br>
+	{{ include('program/_delete_form.html.twig') }}
 	<a href="{{ path('program_index') }}">
 		Retour à la liste des programmes
 	</a>

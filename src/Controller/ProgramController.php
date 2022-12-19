@@ -47,6 +47,8 @@ class ProgramController extends AbstractController
             // Deal with the submitted data
             // For example : persiste & flush the entity
             $programRepository->save($program, true);
+            // Once the form is submitted, valid and the data inserted in database, you can define the success flash message
+            $this->addFlash('success', 'La série a bien été créée.');
             // And redirect to a route that display the result
             // Redirect to programs list
             return $this->redirectToRoute('program_index');
@@ -57,6 +59,30 @@ class ProgramController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    // EDIT PROGRAM START
+
+
+    #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Program $program, ProgramRepository $programRepository): Response
+    {
+        $form = $this->createForm(ProgramType::class, $program);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $programRepository->save($program, true);
+            $this->addFlash('success', 'La série a bien été modifiée.');
+
+            return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->renderForm('program/edit.html.twig', [
+            'program' => $program,
+            'form' => $form,
+        ]);
+    }
+
+    // EDIT PROGRAM END
 
 
 
@@ -92,4 +118,19 @@ class ProgramController extends AbstractController
             'episode' => $episode,
         ]);
     }
+
+    // DELETE PROGRAM START
+
+    #[Route('/{id}', name: 'delete', methods: ['POST'])]
+    public function delete(Request $request, Program $program, ProgramRepository $programRepository): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
+            $programRepository->remove($program, true);
+            $this->addFlash('danger', 'La série a bien été supprimée.');
+        }
+
+        return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // DELETE PROGRAM END
 }
