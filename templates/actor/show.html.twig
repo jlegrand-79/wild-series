@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+{% block title %}Les séries de
+	{{ actor.name }}
+{% endblock %}
+{% block body %}
+	<h1 class="mt-0">Les séries de 
+		{{ actor.name }}</h1>
+	{% for program in programs %}
+		<div>
+			<h2>{{ loop.index }}
+				/
+				{{ program.title }}</h2>
+			<p>{{ program.synopsis }}</p>
+			<a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
+		</div>
+	{% else %}
+		Aucune série trouvée pour cet acteur ou cette actrice.
+	{% endfor %}
+
+	<a href="{{ path('actor_index') }}">
+		Retour à la liste des acteurs et actrices
+	</a>
+	<br/>
+
+	<a href="{{ path('app_index') }}">
+		Retour à l'accueil
+	</a>
+{% endblock %}
