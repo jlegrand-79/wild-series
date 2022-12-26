@@ -31,10 +31,12 @@
 					<li>Aucun acteur pour cette série</li>
 				{% endfor %}
 			</ul>
+			<h2>Durée totale</h2>
+			<p>{{ programDuration }}</p>
 		</div>
 	</div>
 
-	<a href="{{ path('program_edit', {'id': program.id}) }}">Modifier la série</a><br>
+	<a href="{{ path('program_edit', {'slug': program.slug}) }}">Modifier la série</a><br>
 	{{ include('program/_delete_form.html.twig') }}
 	<a href="{{ path('program_index') }}">
 		Retour à la liste des programmes

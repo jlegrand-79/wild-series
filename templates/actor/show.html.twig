@@ -3,7 +3,7 @@
 	{{ actor.name }}
 {% endblock %}
 {% block body %}
-	<h1 class="mt-0">Les séries de 
+	<h1 class="mt-0">Les séries de
 		{{ actor.name }}</h1>
 	{% for program in programs %}
 		<div>
@@ -11,7 +11,7 @@
 				/
 				{{ program.title }}</h2>
 			<p>{{ program.synopsis }}</p>
-			<a href="{{ path("program_show", { id: program.id }) }}">Voir la fiche</a>
+			<a href="{{ path("program_show", { slug: program.slug }) }}">Voir la fiche</a>
 		</div>
 	{% else %}
 		Aucune série trouvée pour cet acteur ou cette actrice.

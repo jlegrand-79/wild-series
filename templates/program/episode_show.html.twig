@@ -22,7 +22,7 @@
 			<p>{{ episode.synopsis }}</p>
 		</div>
 	</div>
-	<a href="{{ path('app_episode_edit', {'id': episode.id}) }}">Modifier l'épisode</a><br>
+	<a href="{{ path('app_episode_edit', {'slug': episode.slug}) }}">Modifier l'épisode</a><br>
 	{{ include('episode/_delete_form.html.twig') }}
 	<a href="{{ path('program_index') }}">
 		Retour à la liste des programmes
