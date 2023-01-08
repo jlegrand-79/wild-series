@@ -1,0 +1,29 @@
+{% extends 'emailBase.html.twig' %}
+
+{% block title %}New episode{% endblock %}
+
+{% block container %}
+	<container>
+		<row>
+			<columns>
+				<h1>New episode
+					{{ episode.title }}
+					created</h1>
+				<p>Hello, the new episode
+					{{ episode.title }}
+					has been created on Wild Series</p>
+				<h2>Synopsis</h2>
+				<p>{{ episode.synopsis }}</p>
+				<h2>Details</h2>
+				<ul>
+					<li>{{ episode.season.programseason }}
+						- Episode No.{{ episode.number }}</li>
+					<li>Duration :
+						{{ episode.duration }}
+						minutes</li>
+				</ul>
+				<p><a href="{{ url("program_show", { slug: episode.season.program.slug }) }}">Voir la fiche de cette série</a>
+			</columns>
+		</row>
+	</container>
+{% endblock %}

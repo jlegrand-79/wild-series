@@ -123,6 +123,6 @@ class Season
     {
         $program = $this->getProgram();
         $programTitle = $program->getTitle();
-        return $programTitle . " - Saison n°" . $this->getNumber();
+        return $programTitle . " - Season No." . $this->getNumber();
     }
 }

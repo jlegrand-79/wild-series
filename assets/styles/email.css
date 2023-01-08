@@ -1,0 +1,63 @@
+body {
+    background-color: lightgoldenrodyellow;
+    font-family: 'Roboto', sans-serif;
+}
+
+main {
+    margin: 2rem;
+}
+
+h1 {
+    color: #0143a3;
+}
+
+h2 {
+    color: #1a1a1a;
+}
+
+li {
+    list-style-type: none;
+}
+
+.brand {
+    background: #0143a3;
+    font-size: 2rem;
+    color: lightgoldenrodyellow;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.brand .wrapper-inner {
+    padding: 10px;
+    text-align: center;
+    /*controls the height of the header*/
+}
+
+.header {
+    background: #0143a3;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+
+.header a {
+    color: lightgoldenrodyellow;
+    font-weight: bold;
+    text-decoration: none;
+    margin-bottom: 0;
+}
+
+.header .wrapper-inner {
+    padding: 0px;
+    /*controls the height of the header*/
+}
+
+.menu-item {
+    padding: 10px;
+}
+
+@import 'settings';
+@import 'foundation-emails';

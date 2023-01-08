@@ -1,6 +1,11 @@
 twig:
-    default_path: '%kernel.project_dir%/templates'
+  default_path: '%kernel.project_dir%/templates'
+  paths:
+    # point this wherever your css files live
+    '%kernel.project_dir%/assets/styles': styles
 
 when@test:
-    twig:
-        strict_variables: true
+  twig:
+    strict_variables: true
+
+

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<title>
+			{% block title %}{% endblock %}
+		</title>
+	</head>
+	<body>
+		{% apply inky_to_html|inline_css(source('@styles/email.css')) %}
+		<wrapper class="brand">
+			<div>
+				<img src="{{ asset('build/images/lion-xxl_white.png') }}" alt="wild series" height="32px">
+			</div>
+			<div>
+				Wild Series
+			</div>
+		</wrapper>
+		<wrapper class="header">
+			<menu>
+				<item class="menu-item" href="{{ url("program_index") }}">Séries</item>
+				<item class="menu-item" href="{{ url("category_index") }}">Catégories</item>
+				<item class="menu-item" href="{{ url("actor_index") }}">Acteurs</item>
+			</menu>
+		</wrapper>
+
+		{% block container %}{% endblock %}
+
+		{% endapply %}
+	</body>
+</html>

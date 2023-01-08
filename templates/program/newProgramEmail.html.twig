@@ -1,0 +1,21 @@
+{% extends 'emailBase.html.twig' %}
+
+{% block title %}New program
+{% endblock %}
+
+{% block container %}
+	<container>
+		<row>
+			<columns>
+				<h1>New program
+					{{ program.title }}
+					created</h1>
+				<p>Hello, the new program
+					{{ program.title }}
+					has been created on Wild Series</p>
+				<h2>Synopsis</h2>
+				<p>{{program.synopsis }}</p>
+			</columns>
+		</row>
+	</container>
+{% endblock %}
