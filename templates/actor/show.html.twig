@@ -49,9 +49,9 @@
 		{{ actor.name }}</h2>
 	{% for program in programs %}
 		<div>
-			<h2>{{ loop.index }}
+			<h3>{{ loop.index }}
 				/
-				{{ program.title }}</h2>
+				{{ program.title }}</h3>
 			<p>{{ program.synopsis }}</p>
 			<a href="{{ path("program_show", { slug: program.slug }) }}">Voir la fiche</a>
 		</div>
