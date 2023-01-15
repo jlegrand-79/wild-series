@@ -1,24 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-	All actors
+{% block title %}Actor index
 {% endblock %}
 
 {% block body %}
-	<h1>Tous les acteurs</h1>
-	{% for actor in actors %}
-		<div>
-			<h2>{{ loop.index }}
-				/
-				{{ actor.name }}
-			</h2>
-			<a href="{{ path("actor_show", { actorId: actor.id }) }}">Voir les séries dans lesquelles il ou elle joue</a>
-		</div>
-	{% else %}
-		Aucune série trouvée.
-	{% endfor %}
+	<h1>Actor index</h1>
 
-	<a href="{{ path('app_index') }}">
-		Retour à l'accueil
-	</a>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Picture</th>
+				<th>UpdatedAt</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for actor in actors %}
+				<tr>
+					{# <td>{{ actor.id }}</td> #}
+					<td>{{ loop.index }}</td>
+					<td>{{ actor.name }}</td>
+					<td>{{ actor.picture }}</td>
+					<td>{{ actor.updatedAt ? actor.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+					<td>
+						<a href="{{ path('app_actor_show', {'id': actor.id}) }}">show</a>
+						<a href="{{ path('app_actor_edit', {'id': actor.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_actor_new') }}">Create new</a>
+	<a href="{{ path('app_index') }}">Retour à l'accueil</a>
 {% endblock %}

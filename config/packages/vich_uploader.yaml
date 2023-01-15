@@ -1,0 +1,14 @@
+# config/packages/vich_uploader.yaml
+vich_uploader:
+  db_driver: orm
+  metadata:
+    type: attribute
+  mappings:
+    poster_file:
+      uri_prefix: /uploads/images/posters
+      upload_destination: '%upload_directory%/posters/'
+      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+    picture_file:
+      uri_prefix: /uploads/images/pictures
+      upload_destination: '%upload_directory%/pictures/'
+      namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

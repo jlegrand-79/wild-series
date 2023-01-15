@@ -1,10 +1,52 @@
 {% extends 'base.html.twig' %}
-{% block title %}Les séries de
-	{{ actor.name }}
+
+{% block title %}Actor
 {% endblock %}
+
 {% block body %}
-	<h1 class="mt-0">Les séries de
-		{{ actor.name }}</h1>
+	<h1>Actor</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ actor.id }}</td>
+			</tr>
+			<tr>
+				<th>Name</th>
+				<td>{{ actor.name }}</td>
+			</tr>
+			<tr>
+				<th>Picture Name</th>
+				<td>{{ actor.picture }}</td>
+			</tr>
+			<tr>
+				<th>Picture</th>
+				<td>
+					{% if actor.picture is null %}
+						<div></div>
+					{% else %}
+						{% if actor.picture starts with 'http' %}
+							<div>
+								<img class="align-self-start mr-3" src="{{actor.picture}}" alt="{{ actor.name }} poster">
+							</div>
+						{% else %}
+							<div>
+								<img class="align-self-start mr-3" src="{{ vich_uploader_asset(actor) }}" alt="{{ actor.name }} poster">
+							</div>
+						{% endif %}
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>UpdatedAt</th>
+				<td>{{ actor.updatedAt ? actor.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h2 class="mt-0">Les séries de
+		{{ actor.name }}</h2>
 	{% for program in programs %}
 		<div>
 			<h2>{{ loop.index }}
@@ -17,12 +59,9 @@
 		Aucune série trouvée pour cet acteur ou cette actrice.
 	{% endfor %}
 
-	<a href="{{ path('actor_index') }}">
-		Retour à la liste des acteurs et actrices
-	</a>
-	<br/>
+	<a href="{{ path('app_actor_index') }}">back to list</a>
 
-	<a href="{{ path('app_index') }}">
-		Retour à l'accueil
-	</a>
+	<a href="{{ path('app_actor_edit', {'id': actor.id}) }}">edit</a>
+
+	{{ include('actor/_delete_form.html.twig') }}
 {% endblock %}

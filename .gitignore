@@ -25,3 +25,6 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+# upload_directory and vich_uploader
+/public/uploads/
