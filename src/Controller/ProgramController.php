@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Comment;
 use App\Entity\Episode;
 use App\Entity\Program;
 use App\Entity\Season;
+use App\Form\CommentType;
 use App\Repository\ProgramRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,7 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ProgramType;
+use App\Repository\CommentRepository;
 use App\Service\ProgramDuration;
+use DateTime;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -129,12 +133,51 @@ class ProgramController extends AbstractController
     #[Entity('program', options: ['mapping' => ['programSlug' => 'slug']])]
     #[Entity('season', options: ['mapping' => ['seasonId' => 'id']])]
     #[Entity('episode', options: ['mapping' => ['episodeSlug' => 'slug']])]
-    public function showEpisode(Program $program, Season $season, Episode $episode): Response
-    {
+    public function showEpisode(
+        Program $program,
+        Season $season,
+        Episode $episode,
+        Request $request,
+        CommentRepository $commentRepository,
+    ): Response {
+        $comments = $commentRepository->findBy(
+            ['episode' => $episode->getId()],
+            ['date' => 'ASC'],
+        );
+        if (!$this->getUser()) {
+            return $this->render('program/episode_show.html.twig', [
+                'program' => $program,
+                'season' => $season,
+                'episode' => $episode,
+                'comments' => $comments,
+            ]);
+        }
+        $user = $this->getUser();
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+        $commentForm->handleRequest($request);
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+            $comment->setAuthor($user);
+            $comment->setEpisode($episode);
+            $comment->setDate(new DateTime('now'));
+            $commentRepository->save($comment, true);
+            $this->addFlash('success', 'Votre avis a bien été ajouté !');
+            return $this->redirectToRoute(
+                'program_episode_show',
+                [
+                    'programSlug' => $program->getSlug(),
+                    'seasonId' => $season->getId(),
+                    'episodeSlug' => $episode->getSlug(),
+                ],
+                Response::HTTP_SEE_OTHER
+            );
+        }
         return $this->render('program/episode_show.html.twig', [
             'program' => $program,
             'season' => $season,
             'episode' => $episode,
+            'comment_form' => $commentForm->createView(),
+            'comments' => $comments,
         ]);
     }
 

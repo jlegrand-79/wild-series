@@ -9,22 +9,51 @@
 {% endblock %}
 
 {% block body %}
-	<div class="media">
-		<div class="media-body">
-			<h1 class="mt-0">{{ program.title }}
-				| Saison n°
-				{{ season.number }}
-				| Épisode n°
-				{{ episode.number }}</h1>
-			<h2>Titre</h2>
-			<p>{{ episode.title }}</p>
-			<h2>Synopsis</h2>
-			<p>{{ episode.synopsis }}</p>
-		</div>
+<div class="media">
+	<div class="media-body">
+		<h1 class="mt-0">{{ program.title }}
+			| Saison n°
+			{{ season.number }}
+			| Épisode n°
+			{{ episode.number }}</h1>
+		<h2>Titre</h2>
+		<p>{{ episode.title }}</p>
+		<h2>Synopsis</h2>
+		<p>{{ episode.synopsis }}</p>
+		<h2>Durée</h2>
+		<p>{{ episode.duration }}
+			minutes</p>
 	</div>
-	<a href="{{ path('app_episode_edit', {'slug': episode.slug}) }}">Modifier l'épisode</a><br>
-	{{ include('episode/_delete_form.html.twig') }}
-	<a href="{{ path('program_index') }}">
-		Retour à la liste des programmes
-	</a>
-{% endblock %}
+</div>
+
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+	<h2>Votre avis compte !</h2>
+	{% include "comment/_form.html.twig" %}
+{% endif %}
+{% if comments|length > 0 %}
+	<h2>Tous les avis</h2>
+	<table class="table table-striped text-center">
+		<thead>
+			<tr>
+				<th class="text-bg-primary" scope="col">Note</th>
+				<th class="text-bg-primary" scope="col">Commentaire</th>
+				<th class="text-bg-primary" scope="col">Auteur</th>
+				<th class="text-bg-primary" scope="col">Date</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for comment in comments %}
+				<tr>
+					<th scope="row">{{ comment.rate }}</th>
+					<td class="fst-italic">{{ comment.comment }}</td>
+					<td>{{ comment.author.email }}</td>
+					<td>{{ comment.date|date("l d/m/Y à h:i:s") }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}
+{% if is_granted('ROLE_CONTRIBUTOR') or is_granted('ROLE_ADMIN') %}
+	<a href="{{ path('app_episode_edit', {'slug': episode.slug}) }}">
+		Modifier l'épisode</td>
+</tr></a><br>{{ include('episode/_delete_form.html.twig') }}{% endif %}<a href="{{ path('program_index') }}">Retour à la liste des programmes</a>{% endblock %}

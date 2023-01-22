@@ -4,6 +4,8 @@ twig:
     # point this wherever your css files live
     '%kernel.project_dir%/assets/styles': styles
 
+  form_themes: ['bootstrap_5_layout.html.twig']
+
 when@test:
   twig:
     strict_variables: true

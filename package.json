@@ -26,6 +26,7 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "bootstrap-icons": "^1.10.3",
         "foundation-emails": "^2.4.0"
     }
 }
