@@ -47,8 +47,12 @@
 	</div>
 </div>
 
-<a href="{{ path('program_edit', {'slug': program.slug}) }}">Modifier la série</a><br>
-{{ include('program/_delete_form.html.twig') }}
-<a href="{{ path('program_index') }}">
-	Retour à la liste des programmes
-</a>{% endblock %}
+{% if is_granted("ROLE_ADMIN") or app.user == program.owner %}
+	<a href="{{ path('program_edit', { 'slug': program.slug} ) }}">Éditer</a><br>
+	{{ include('program/_delete_form.html.twig') }}
+	{%endif%}
+
+	<a href="{{ path('program_index') }}">
+		Retour à la liste des programmes
+	</a>
+{% endblock %}

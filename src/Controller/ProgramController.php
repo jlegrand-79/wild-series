@@ -20,6 +20,7 @@ use DateTime;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -54,6 +55,7 @@ class ProgramController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $slug = $slugger->slug($program->getTitle());
             $program->setSlug($slug);
+            $program->setOwner($this->getUser());
             // Deal with the submitted data
             // For example : persiste & flush the entity
             $programRepository->save($program, true);
@@ -83,24 +85,35 @@ class ProgramController extends AbstractController
     // Route avant de changer l'id par le slug : 
     // #[Route('/{id}/edit', name: 'edit', methods: ['GET', 'POST'])]
     #[Route('/{slug}/edit', name: 'edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Program $program, ProgramRepository $programRepository, SluggerInterface $slugger): Response
-    {
-        $form = $this->createForm(ProgramType::class, $program);
-        $form->handleRequest($request);
+    public function edit(
+        Request $request,
+        Program $program,
+        ProgramRepository $programRepository,
+        SluggerInterface $slugger
+    ): Response {
+        $user = $this->getUser();
+        // Check wether the logged in user is the owner of the program
+        if (in_array('ROLE_ADMIN', $user->getRoles()) || $user == $program->getOwner()) {
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $slug = $slugger->slug($program->getTitle());
-            $program->setSlug($slug);
-            $programRepository->save($program, true);
-            $this->addFlash('success', 'La série a bien été modifiée.');
+            $form = $this->createForm(ProgramType::class, $program);
+            $form->handleRequest($request);
 
-            return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $slug = $slugger->slug($program->getTitle());
+                $program->setSlug($slug);
+                $programRepository->save($program, true);
+                $this->addFlash('success', 'La série a bien été modifiée.');
+
+                return $this->redirectToRoute('program_index', [], Response::HTTP_SEE_OTHER);
+            }
+
+            return $this->renderForm('program/edit.html.twig', [
+                'program' => $program,
+                'form' => $form,
+            ]);
         }
-
-        return $this->renderForm('program/edit.html.twig', [
-            'program' => $program,
-            'form' => $form,
-        ]);
+        // If not the owner, throws a 403 Access Denied exception
+        throw $this->createAccessDeniedException('Only the owner can edit the program!');
     }
 
     // EDIT PROGRAM END

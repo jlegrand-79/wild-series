@@ -78,6 +78,10 @@ class Program
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?DateTimeInterface $updatedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'programs')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $Owner = null;
+
     public function __construct()
     {
         // $this->number = new ArrayCollection();
@@ -231,6 +235,18 @@ class Program
     public function setUpdatedAt(?DateTime $updatedAt = null): Program
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->Owner;
+    }
+
+    public function setOwner(?User $Owner): self
+    {
+        $this->Owner = $Owner;
+
         return $this;
     }
 }
