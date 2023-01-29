@@ -6,6 +6,7 @@
 
 {% block body %}
 	<h1>Toutes les séries</h1>
+	{% include "program/_search.html.twig" %}
 	{% for program in programs %}
 		<div>
 			<h2>{{ loop.index }}

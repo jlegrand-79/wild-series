@@ -12,7 +12,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(ProgramRepository $programRepository): Response
     {
-        $programs = $programRepository->findAll();
+        $programs = $programRepository->findRecentPrograms();
         return $this->render('home/index.html.twig', [
             'programs' => $programs,
         ]);

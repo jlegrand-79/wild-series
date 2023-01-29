@@ -39,28 +39,63 @@ class ProgramRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Program[] Returns an array of Program objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findLikeName(string $name)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->where('p.title LIKE :name')
+            ->setParameter('name', '%' . $name . '%')
+            ->orderBy('p.title', 'ASC')
+            ->getQuery();
 
-//    public function findOneBySomeField($value): ?Program
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $queryBuilder->getResult();
+    }
+
+    public function findByTitleOrActor(string $search)
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->innerJoin('p.actors', 'a')
+            ->where('a.name LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->orWhere('p.title LIKE :search')
+            ->setParameter('search', '%' . $search . '%')
+            ->orderBy('p.title', 'ASC')
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
+    public function findRecentPrograms()
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery('SELECT p, s FROM App\Entity\Program p
+                              INNER JOIN p.seasons s
+                              WHERE s.year>2010');
+
+        return $query->execute();
+    }
+
+    //    /**
+    //     * @return Program[] Returns an array of Program objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Program
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

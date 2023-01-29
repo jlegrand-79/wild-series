@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ProgramType;
+use App\Form\SearchProgramType;
 use App\Repository\CommentRepository;
 use App\Service\ProgramDuration;
 use DateTime;
@@ -26,14 +27,23 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class ProgramController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(ProgramRepository $programRepository): Response
+    public function index(Request $request, ProgramRepository $programRepository): Response
     {
-        $programs = $programRepository->findAll();
+        $form = $this->createForm(SearchProgramType::class);
+        $form->handleRequest($request);
 
-        return $this->render(
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData()['search'];
+            $programs = $programRepository->findByTitleOrActor($search);
+        } else {
+            $programs = $programRepository->findAll();
+        }
+
+        return $this->renderForm(
             'program/index.html.twig',
             [
                 'programs' => $programs,
+                'form' => $form
             ]
         );
     }
