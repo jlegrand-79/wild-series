@@ -20,7 +20,7 @@
 			<h1>{{ program.title }}</h1>
 			{% if app.user %}
 				<div>
-					<a href="{{ path('program_watchlist', {id: program.id})}}">
+					<a id="watchlist" href="{{ path('program_watchlist', {id: program.id})}}">
 						<i class="watchlist-icons bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}" alt="watchlist"></i>
 					</a>
 				</div>

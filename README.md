@@ -16,3 +16,8 @@ Symfony Quest Nr.27 Challenge
 <https://webmshare.com/play/1yJGL>
 
 - Ajout/Suppression d'une série à la Watchlist pour un utilisateur
+
+Symfony Quest Nr.28 Challenge
+<https://webmshare.com/play/LbN4j>
+
+- Ajout/Suppression d'une série à la Watchlist pour un utilisateur par un appel AJAX

@@ -215,19 +215,21 @@ class ProgramController extends AbstractController
             throw $this->createNotFoundException(
                 'Aucune série correspondante en base.'
             );
-        }      
-    
+        }
+
         /** @var \App\Entity\User */
-        $user = $this->getUser();       
+        $user = $this->getUser();
         if ($user->isInWatchlist($program)) {
             $user->removeFromWatchlist($program);
         } else {
             $user->addToWatchlist($program);
-        }        
-    
-        $userRepository->save($user, true);        
-    
-        return $this->redirectToRoute('program_show', ['slug' => $program->getSlug()], Response::HTTP_SEE_OTHER);
+        }
+
+        $userRepository->save($user, true);
+
+        return $this->json([
+            'isInWatchlist' => $user->isInWatchlist($program)
+        ]);
     }
 
     // WATCHLIST END
