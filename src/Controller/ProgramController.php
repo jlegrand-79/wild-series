@@ -16,12 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ProgramType;
 use App\Form\SearchProgramType;
 use App\Repository\CommentRepository;
+use App\Repository\UserRepository;
 use App\Service\ProgramDuration;
 use DateTime;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -203,6 +205,32 @@ class ProgramController extends AbstractController
             'comments' => $comments,
         ]);
     }
+
+    // WATCHLIST START
+
+    #[Route('/{id}/watchlist', methods: ['GET', 'POST'], name: 'watchlist')]
+    public function addToWatchlist(Program $program, UserRepository $userRepository): Response
+    {
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'Aucune série correspondante en base.'
+            );
+        }      
+    
+        /** @var \App\Entity\User */
+        $user = $this->getUser();       
+        if ($user->isInWatchlist($program)) {
+            $user->removeFromWatchlist($program);
+        } else {
+            $user->addToWatchlist($program);
+        }        
+    
+        $userRepository->save($user, true);        
+    
+        return $this->redirectToRoute('program_show', ['slug' => $program->getSlug()], Response::HTTP_SEE_OTHER);
+    }
+
+    // WATCHLIST END
 
     // DELETE PROGRAM START
 

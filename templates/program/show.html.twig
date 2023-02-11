@@ -5,20 +5,27 @@
 
 {% block body %}
 	<div class="media">
-		{% if program.poster is empty %}
-			<div></div>
-		{% else %}
+		{% if program.poster %}
 			{% if program.poster starts with 'http' %}
 				<div>
-					<img class="align-self-start mr-3" src="{{program.poster}}" alt="{{ program.title }} poster">
+					<img class="align-self-start mr-3 program-poster" src="{{program.poster}}" alt="{{ program.title }} poster">
 				</div>
 			{% else %}
 				<div>
-					<img class="align-self-start mr-3" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }} poster">
+					<img class="align-self-start mr-3 program-poster" src="{{ vich_uploader_asset(program) }}" alt="{{ program.title }} poster">
 				</div>
 			{% endif %}
 		{% endif %}
-		<h1 class="mt-0">{{ program.title }}</h1>
+		<div class="d-flex flex-row align-items-center">
+			<h1>{{ program.title }}</h1>
+			{% if app.user %}
+				<div>
+					<a href="{{ path('program_watchlist', {id: program.id})}}">
+						<i class="watchlist-icons bi {{ app.user.isInWatchlist(program) ? 'bi-heart-fill' : 'bi-heart' }}" alt="watchlist"></i>
+					</a>
+				</div>
+			{% endif %}
+		</div>
 		<p>{{ program.synopsis }}</p>
 		<p>Catégorie :
 			{{ program.category.name }}</p>

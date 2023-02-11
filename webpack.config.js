@@ -97,5 +97,8 @@ fullConfig.devServer = {
     watchFiles: {
         paths: ['templates/**/*.html.twig'],
     },
+    headers: {
+        'Access-Control-Allow-Origin': '*',
+    },
 };
 module.exports = fullConfig;
